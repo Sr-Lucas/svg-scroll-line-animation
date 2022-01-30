@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>  
+
+  <div class="line-container">
+    <svg viewBox="0 0 190 2096" fill="none" preserveAspectRatio="xMidYMax">
+      <path d="M94 0V587.5C91.5 592.167 86.5 604.1 86.5 614.5C86.5 624.9 86.5 635.167 86.5 639M86.5 639H45.5L86.5 680V639ZM86.5 639H108C118.5 637.833 142.2 632.8 153 622C163.8 611.2 171.167 603.833 173.5 601.5C185 579.833 201.1 536.5 173.5 536.5C145.9 536.5 149.333 536.5 154.5 536.5L94 703.5V1460.5H115V1431C123.5 1427.5 142.6 1422.6 151 1431C165.5 1417.5 180 1417.5 174.5 1412C178.1 1403.2 182.667 1388.67 184.5 1382.5C177.333 1378.67 163 1369.4 163 1363C163 1355 155.5 1338.5 151 1334C147.4 1330.4 127.833 1330.83 118.5 1331.5V1280C103.333 1282.83 73 1297.1 73 1331.5C56.5 1351.5 28.5 1376.5 28.5 1460.5C28.5 1544.5 -34 1557 28.5 1557C78.5 1557 93 1557 94 1557V2095.5" stroke="red" stroke-width="5px"/>
+    </svg>
+  </div>
+
+  <section class="one">
+    <h1 class="scroll" data-rate=".4" data-direction="vertical">Ocean stuff</h1>
+  </section>
+
+  <section class="two">
+    <h1 class="scroll" data-rate=".2" data-direction="vertical">Cat stuff</h1>
+    <p>big watermark</p>
+  </section>
+
+
+  <script>
+
+    let path = document.querySelector('path');
+    let pathLength = path.getTotalLength();
+
+    path.style.strokeDasharray = pathLength + ' ' + pathLength;
+    path.style.strokeDashoffset = pathLength;
+
+    window.addEventListener('scroll', () => {
+
+      // what % down is it
+      let scrollPercentage = (document.documentElement.scrollTop + document.body.scrollTop) / (document.documentElement.scrollHeight - document.documentElement.clientHeight);
+
+      // Length to offset the dashes
+      let drawLength = pathLength * scrollPercentage;
+
+      // Draw in reverse
+      path.style.strokeDashoffset = pathLength - drawLength;
+
+
+      // Parallax:
+      const target = document.querySelectorAll('.scroll');
+      let index = 0, length = target.length;
+      for (index; index < length; index++) {
+        let pos = window.pageYOffset * target[index].dataset.rate;
+
+        if (target[index].dataset.direction === 'vertical') {
+          target[index].style.transform = `translate3d(0px, ${pos}px, 0px)`;
+        } else {
+          let posX = window.pageYOffset * target[index].dataset.ratex;
+          let posY = window.pageYOffset * target[index].dataset.ratey;
+
+          target[index].style.transform = `translate3d(${pos}px, ${pos}px, 0px)`;
+        }
+      }
+
+    });
+
+  </script>
+</body>
+</html>
